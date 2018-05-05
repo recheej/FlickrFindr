@@ -1,5 +1,7 @@
 package com.example.rechee.flickrfindr.model;
 
+import android.net.Uri;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -105,4 +107,9 @@ public class Photo {
         this.isfamily = isfamily;
     }
 
+    public Uri getPhotoUri() {
+        String urlString = String.format("https://farm%s.staticflickr.com/%s/%s_%s.jpg",
+                this.getFarm(), this.getServer(), this.getId(), this.getSecret());
+        return Uri.parse(urlString);
+    }
 }

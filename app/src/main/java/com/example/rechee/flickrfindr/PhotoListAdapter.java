@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rechee.flickrfindr.model.Photo;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.ViewHolder> {
     private final List<Photo> photoData;
+    private final Picasso picasso;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView photoImageView;
@@ -29,6 +31,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
 
     public PhotoListAdapter(List<Photo> photoData) {
         this.photoData = photoData;
+        this.picasso = Picasso.get();
     }
 
     @NonNull
@@ -42,9 +45,12 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) { Photo photo = photoData.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Photo photo = photoData.get(position);
 
         holder.textViewPhotoTitle.setText(photo.getTitle());
+
+        picasso.load(photo.getPhotoUri()).into(holder.photoImageView);
     }
 
     @Override
