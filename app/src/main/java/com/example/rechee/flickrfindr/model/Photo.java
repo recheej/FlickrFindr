@@ -34,6 +34,25 @@ public class Photo {
     @SerializedName("isfamily")
     @Expose
     private Integer isfamily;
+    @SerializedName("height_l")
+    @Expose
+    private String heightL;
+    @SerializedName("width_l")
+    @Expose
+    private String widthL;
+    @SerializedName("url_l")
+    @Expose
+    private String urlL;
+
+    @SerializedName("height_n")
+    @Expose
+    private String heightN;
+    @SerializedName("width_n")
+    @Expose
+    private String widthN;
+    @SerializedName("url_n")
+    @Expose
+    private String urlN;
 
     public String getId() {
         return id;
@@ -111,5 +130,53 @@ public class Photo {
         String urlString = String.format("https://farm%s.staticflickr.com/%s/%s_%s.jpg",
                 this.getFarm(), this.getServer(), this.getId(), this.getSecret());
         return Uri.parse(urlString);
+    }
+
+    public String getUrlN() {
+        return urlN;
+    }
+
+    public void setUrlN(String urlN) {
+        this.urlN = urlN;
+    }
+
+    public String getWidthN() {
+        return widthN;
+    }
+
+    public void setWidthN(String widthN) {
+        this.widthN = widthN;
+    }
+
+    public String getHeightN() {
+        return heightN;
+    }
+
+    public void setHeightN(String heightN) {
+        this.heightN = heightN;
+    }
+
+    public String getUrlL() {
+        return urlL;
+    }
+
+    public void setUrlL(String urlL) {
+        this.urlL = urlL;
+    }
+
+    public String getWidthL() {
+        return widthL;
+    }
+
+    public void setWidthL(String widthL) {
+        this.widthL = widthL;
+    }
+
+    public String getHeightL() {
+        return heightL;
+    }
+
+    public void setHeightL(String heightL) {
+        this.heightL = heightL;
     }
 }
