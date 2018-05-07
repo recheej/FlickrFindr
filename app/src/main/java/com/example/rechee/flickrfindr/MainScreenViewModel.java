@@ -9,6 +9,7 @@ import android.arch.lifecycle.ViewModel;
 import com.example.rechee.flickrfindr.model.Photo;
 import com.example.rechee.flickrfindr.model.PhotoSearchResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,8 +36,13 @@ public class MainScreenViewModel extends ViewModel {
                 return Transformations.map(photoSearchRepository.getSearchResult(query, NUM_PER_PAGE), new Function<PhotoSearchResult, PhotoSearchResult>() {
                     @Override
                     public PhotoSearchResult apply(PhotoSearchResult input) {
+
                         if(input != null){
                             List<Photo> photos = input.getPhotos().getPhoto();
+                            if(photos == null){
+                                photos = new ArrayList<>();
+                            }
+
                             for (Photo photo : photos) {
                                 if(photo.getUrlL() == null){
                                     photo.setUrlL(PLACEHOLDER_URL);

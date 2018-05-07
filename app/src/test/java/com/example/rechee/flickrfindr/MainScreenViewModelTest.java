@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,34 @@ public class MainScreenViewModelTest {
                 Photo resultPhoto = photoSearchResult.getPhotos().getPhoto().get(0);
                 assertEquals(MainScreenViewModel.PLACEHOLDER_URL, resultPhoto.getUrlL());
                 assertEquals(MainScreenViewModel.PLACEHOLDER_URL, resultPhoto.getUrlN());
+            }
+        });
+        viewModel.searchForPhotos("shark");
+    }
+
+    @Test
+    public void testPhotoSearchResultHandlesEmptyPhotos() {
+
+        final PhotoSearchResult testResult = getTestPhotoResult();
+        List<Photo> emptyPhotos = new ArrayList<>();
+        when(testResult.getPhotos().getPhoto()).thenReturn(emptyPhotos);
+
+
+        MutableLiveData<PhotoSearchResult> testLiveData = new MutableLiveData<>();
+        testLiveData.setValue(testResult);
+
+        when(photoSearchRepository.getSearchResult("shark", 25)).thenReturn(testLiveData);
+
+        //Observer observer = mock(Observer<PhotoSearchResult>)
+        viewModel.getPhotoSearchResult().observeForever(new Observer<PhotoSearchResult>() {
+            @Override
+            public void onChanged(@Nullable PhotoSearchResult photoSearchResult) {
+                final Photos photosContainer = photoSearchResult.getPhotos();
+                assertNotNull(photosContainer);
+
+                List<Photo> resultPhotos = photosContainer.getPhoto();
+                assertNotNull(resultPhotos);
+                assertEquals(0, resultPhotos.size());
             }
         });
         viewModel.searchForPhotos("shark");
