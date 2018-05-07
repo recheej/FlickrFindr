@@ -29,6 +29,5 @@ public class PhotoSearchResult {
     public void setStat(String stat) {
         this.stat = stat;
     }
-
 }
 

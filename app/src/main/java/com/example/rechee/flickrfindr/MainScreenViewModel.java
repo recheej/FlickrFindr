@@ -6,7 +6,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.rechee.flickrfindr.model.Photo;
 import com.example.rechee.flickrfindr.model.PhotoSearchResult;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,6 +22,8 @@ public class MainScreenViewModel extends ViewModel {
     private MutableLiveData<String> searchQueryLiveData;
     private LiveData<PhotoSearchResult> photoSearchResultLiveData;
 
+    public static final String PLACEHOLDER_URL = "http://www.pixedelic.com/themes/geode/demo/wp-content/uploads/sites/4/2014/04/placeholder4.png?w=640";
+
     @Inject
     public MainScreenViewModel(final PhotoSearchRepository photoSearchRepository) {
         this.photoSearchRepository = photoSearchRepository;
@@ -27,7 +32,25 @@ public class MainScreenViewModel extends ViewModel {
         photoSearchResultLiveData = Transformations.switchMap(searchQueryLiveData, new Function<String, LiveData<PhotoSearchResult>>() {
             @Override
             public LiveData<PhotoSearchResult> apply(String query) {
-                return photoSearchRepository.getSearchResult(query, NUM_PER_PAGE);
+                return Transformations.map(photoSearchRepository.getSearchResult(query, NUM_PER_PAGE), new Function<PhotoSearchResult, PhotoSearchResult>() {
+                    @Override
+                    public PhotoSearchResult apply(PhotoSearchResult input) {
+                        if(input != null){
+                            List<Photo> photos = input.getPhotos().getPhoto();
+                            for (Photo photo : photos) {
+                                if(photo.getUrlL() == null){
+                                    photo.setUrlL(PLACEHOLDER_URL);
+                                }
+
+                                if(photo.getUrlN() == null){
+                                    photo.setUrlN(PLACEHOLDER_URL);
+                                }
+                            }
+                        }
+
+                        return input;
+                    }
+                });
             }
         });
     }
